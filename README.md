@@ -1,4 +1,8 @@
 # Docker Frappe
+## Installing Docker
+Look at [here](https://docs.docker.com/desktop/install/windows-install/) if you are using windows.
+
+and look at [here](https://docs.docker.com/engine/install/) if you are using Linux.
 ## Build
 ```bash
 docker-compose build
