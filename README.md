@@ -5,9 +5,9 @@ Look at [here](https://docs.docker.com/desktop/install/windows-install/) if you 
 and look at [here](https://docs.docker.com/engine/install/) if you are using Linux.
 ## Build
 ```bash
-docker-compose build
-docker-compose start
+docker-compose up
 ```
+if you want to start with _detach_ mode, the first you must to run `up` and click `CTRL+C` after that, you run `docker-compose start`
 ## Enter to container frappe
 enter to container _frappe_ `docker-compose exec frappe bash`
 ## Init bench
