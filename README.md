@@ -12,13 +12,27 @@ if you want to start with _detach_ mode, the first you must to run `up` and clic
 enter to container _frappe_ `docker-compose exec frappe bash`
 ## Init bench
 [Enter to container frappe](#enter-to-container-frappe)
+### add group frappe
+before initial frappe bench, you must add group if you are using linux or WSL. if `groupadd` not running search in google `how to add group in your linux machine`
+```bash
+sudo groupadd frappe
+sudo usermod -aG frappe $USER
+```
+### change directory to group frappe
+```bash
+sudo chown -R root:frappe dev
+```
+### Initial
 ```bash
 bench init --skip-redis-config-generation frappe-bench
+# enter in frappe-bench
+cd frappe-bench
 bench set-config -g db_host mariadb
 bench set-config -g redis_cache redis://redis-cache:6379
 bench set-config -g redis_queue redis://redis-queue:6379
 bench set-config -g redis_socketio redis://redis-queue:6379
 ```
+> Note after initial, and you want to configure or run server bench, you must inside frappe-bench folder
 ## Create new site
 [Enter to container frappe](#enter-to-container-frappe)
 ```bash
