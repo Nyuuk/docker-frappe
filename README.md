@@ -1,4 +1,6 @@
 # Docker Frappe
+## Notes
+> Mysql Root password : **123**
 ## Installing Docker
 Look at [here](https://docs.docker.com/desktop/install/windows-install/) if you are using windows.
 
