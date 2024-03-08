@@ -13,7 +13,21 @@ if you want to start with _detach_ mode, the first you must to run `up` and clic
 ## Enter to container frappe
 enter to container _frappe_ `docker-compose exec frappe bash`
 ## Init bench
-[Enter to container frappe](#enter-to-container-frappe)
+[Enter to container frappe](#enter-to-container-frappe)]
+
+if you found error `permission denid for user frappe` you must change the `user id` and `group id`
+### Fix error permission denied
+get id from `id user` in your linux machine or host
+```bash
+id
+uid=1000(nyuuk_popos) gid=1000(nyuuk_popos) groups=1000(nyuuk_popos),4(adm),27(sudo),124(lpadmin),999(docker)
+```
+send command into frappe docker container
+```bash
+docker compose exec -it -u root frappe usermod -u 1000 frappe
+docker compose exec -it -u root frappe groupmod -g 1000 frappe
+```
+<span style="color: red;">1000</span> is a id from gruop id and user id
 ### add group frappe
 before initial frappe bench, you must add group if you are using linux or WSL. if `groupadd` not running search in google `how to add group in your linux machine`
 ```bash
