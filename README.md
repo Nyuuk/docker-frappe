@@ -15,28 +15,21 @@ enter to container _frappe_ `docker-compose exec frappe bash`
 ## Init bench
 [Enter to container frappe](#enter-to-container-frappe)]
 
-if you found error `permission denid for user frappe` you must change the `user id` and `group id`
+if you found error `permission denid for user frappe` you must change the `group id`
 ### Fix error permission denied
-get id from `id user` in your linux machine or host
+get id from `group id` in your linux machine or host
 ```bash
 id
 uid=1000(nyuuk_popos) gid=1000(nyuuk_popos) groups=1000(nyuuk_popos),4(adm),27(sudo),124(lpadmin),999(docker)
 ```
 send command into frappe docker container
 ```bash
-docker compose exec -it -u root frappe usermod -u 1000 frappe
 docker compose exec -it -u root frappe groupmod -g 1000 frappe
 ```
-<span style="color: red;">1000</span> is a id from gruop id and user id
-### add group frappe
-before initial frappe bench, you must add group if you are using linux or WSL. if `groupadd` not running search in google `how to add group in your linux machine`
+<span style="color: red;">1000</span> is a id from gruop id `(nyuuk_popos)`. after that you must change the directory permission, this run in host not in container
 ```bash
-sudo groupadd frappe
-sudo usermod -aG frappe $USER
-```
-### change directory to group frappe
-```bash
-sudo chown -R root:frappe dev
+sudo chown -R root:1000 dev
+sudo chmod -R g+rwx dev
 ```
 ### Initial
 ```bash
