@@ -1,6 +1,7 @@
 version: "3.7"
 services:
   mariadb:
+    restart: on-failure
     image: docker.io/mariadb:10.6
     command:
       - --character-set-server=utf8mb4
@@ -8,34 +9,11 @@ services:
       - --skip-character-set-client-handshake
       - --skip-innodb-read-only-compressed # Temporary fix for MariaDB 10.6
     environment:
-      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_ROOT_PASSWORD: ${MARIADB_PWD}
     volumes:
       - mariadb-data:/var/lib/mysql
-    ports:
-      - 3306:3306
-
-  # Enable PostgreSQL only if you use it, see development/README.md for more information.
-  # postgresql:
-  #   image: postgres:11.8
-  #   environment:
-  #     POSTGRES_PASSWORD: 123
-  #   volumes:
-  #     - postgresql-data:/var/lib/postgresql/data
-
-  # Enable Mailpit if you need to test outgoing mail services
-  # See https://mailpit.axllent.org/
-  #  mailpit:
-  #    image: axllent/mailpit
-  #    volumes:
-  #      - mailpit-data:/data
-  #    ports:
-  #      - 8025:8025
-  #      - 1025:1025
-  #    environment:
-  #      MP_MAX_MESSAGES: 5000
-  #      MP_DATA_FILE: /data/mailpit.db
-  #      MP_SMTP_AUTH_ACCEPT_ANY: 1
-  #      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+#    ports:
+#      - 3306:3306
 
   redis-cache:
     image: docker.io/redis:alpine
@@ -44,47 +22,39 @@ services:
     image: docker.io/redis:alpine
 
   frappe:
+    restart: on-failure
     image: docker.io/frappe/bench:latest
-    command: sleep infinity
+    command: /entrypoint/entrypoint.sh
     environment:
       - SHELL=/bin/bash
+      - URL_SITE=api.tripwe.local
+      - MARIADB_PWD=${MARIADB_PWD}
     volumes:
-      #- ./dev:/workspace:cached
-      - ./dev:/workspace
-      # Enable if you require git cloning
-      #- ${HOME}/.ssh:/home/frappe/.ssh
+      - frappe:/workspace
+      - ./entrypoint:/entrypoint
     working_dir: /workspace
-    ports:
+    user: "1000:${GID}"
+    expose:
       - 8000-8005:8000-8005
       - 9000-9005:9000-9005
-  # enable the below service if you need Cypress UI Tests to be executed
-  # Before enabling ensure install_x11_deps.sh has been executed and display variable is exported.
-  # Run install_x11_deps.sh again if DISPLAY is not set
-  # ui-tester:
-  #   # pass custom command to start Cypress otherwise it will use the entrypoint
-  #   # specified in the Cypress Docker image.
-  #   # also pass "--project <folder>" so that when Cypress opens
-  #   # it can find file "cypress.json" and show integration specs
-  #   # https://on.cypress.io/command-line#cypress-open
-  #   entrypoint: 'sleep infinity'
-  #   image: "docker.io/cypress/included:latest"
-  #   environment:
-  #     - SHELL=/bin/bash
-  #     # get the IP address of the host machine and allow X11 to accept
-  #     # incoming connections from that IP address
-  #     #   IP=$(ipconfig getifaddr en0) or mac or \
-  #     #   IP=$($(hostname -I | awk '{print $1}') )  for Ubuntu
-  #     #   /usr/X11/bin/xhost + $IP
-  #     # then pass the environment variable DISPLAY to show Cypress GUI on the host system
-  #     #   DISPLAY=$IP:0
-  #     - DISPLAY
+    # ports:
+    #   - 8000-8005:8000-8005
+    #   - 9000-9005:9000-9005
+
+  # web:
+  #   image: nginx:latest
+  #   depends_on:
+  #     - frappe
+  #   ports:
+  #     - 80:80
+  #     - 443:443
   #   volumes:
-  #     # for Cypress to communicate with the X11 server pass this socket file
-  #     # in addition to any other mapped volumes
-  #     - /tmp/.X11-unix:/tmp/.X11-unix
-  #     - ..:/workspace:z,cached
-  #   network_mode: "host"
+  #     - frappe:/workspace
+  #   restart: on-failure
+    # extra_hosts: # for linux hosts since version 20.10
+    #   - host.docker.internal:host-gateway
+
 volumes:
   mariadb-data:
-  #postgresql-data:
-  #mailpit-data:
+  frappe:
+
