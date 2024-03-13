@@ -56,6 +56,7 @@ bench --site development.localhost clear-cache
 ## Install ERPNext
 [Enter to container frappe](#enter-to-container-frappe)
 ```bash
+bench get-app erpnext
 bench --site development.localhost install-app erpnext
 ```
 ## Start server bench
