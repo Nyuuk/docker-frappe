@@ -3,6 +3,9 @@ services:
   mariadb:
     restart: on-failure
     image: docker.io/mariadb:10.6
+    networks:
+      default:
+        ipv4_address: 172.18.0.5
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
@@ -17,11 +20,20 @@ services:
 
   redis-cache:
     image: docker.io/redis:alpine
+    networks:
+      default:
+        ipv4_address: 172.18.0.4
 
   redis-queue:
     image: docker.io/redis:alpine
+    networks:
+      default:
+        ipv4_address: 172.18.0.3
 
   frappe:
+    networks:
+      default:
+        ipv4_address: 172.18.0.2
     restart: on-failure
     image: docker.io/frappe/bench:latest
     command: /entrypoint/entrypoint.sh
@@ -33,7 +45,7 @@ services:
       - frappe:/workspace
       - ./entrypoint:/entrypoint
     working_dir: /workspace
-    user: "1000:${GID}"
+    # user: "1000:${GID}"
     expose:
       - 8000-8005:8000-8005
       - 9000-9005:9000-9005
