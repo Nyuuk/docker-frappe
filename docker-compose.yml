@@ -1,4 +1,13 @@
 version: "3.7"
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+    config:
+      - subnet: 172.18.0.5/16
+        gateway: 172.18.0.5
+
 services:
   mariadb:
     restart: on-failure
