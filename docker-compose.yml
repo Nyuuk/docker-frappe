@@ -1,11 +1,18 @@
 version: "3.7"
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.26.0.0/16
+          gateway: 172.26.0.1
 services:
   mariadb:
     restart: on-failure
     image: docker.io/mariadb:10.6
     networks:
       default:
-        ipv4_address: 172.18.0.5
+        ipv4_address: 172.26.0.2
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
@@ -22,36 +29,37 @@ services:
     image: docker.io/redis:alpine
     networks:
       default:
-        ipv4_address: 172.18.0.4
+        ipv4_address: 172.26.0.101
 
   redis-queue:
     image: docker.io/redis:alpine
     networks:
       default:
-        ipv4_address: 172.18.0.3
+        ipv4_address: 172.26.0.100
 
   frappe:
     networks:
       default:
-        ipv4_address: 172.18.0.2
+        ipv4_address: 172.26.0.5
     restart: on-failure
     image: docker.io/frappe/bench:latest
     command: /entrypoint/entrypoint.sh
     environment:
       - SHELL=/bin/bash
-      - URL_SITE=api.tripwe.local
+      - URL_SITE=tripwe.local
       - MARIADB_PWD=${MARIADB_PWD}
     volumes:
-      - frappe:/workspace
+      - ./dev:/workspace
+      #- frappe:/workspace
       - ./entrypoint:/entrypoint
     working_dir: /workspace
     # user: "1000:${GID}"
     expose:
       - 8000-8005:8000-8005
       - 9000-9005:9000-9005
-    # ports:
-    #   - 8000-8005:8000-8005
-    #   - 9000-9005:9000-9005
+    ports:
+      - 8000-8005:8000-8005
+      - 9000-9005:9000-9005
 
   # web:
   #   image: nginx:latest
