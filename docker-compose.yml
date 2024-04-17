@@ -42,8 +42,11 @@ services:
       default:
         ipv4_address: 172.26.0.5
     restart: on-failure
-    image: docker.io/frappe/bench:latest
-    command: /entrypoint/entrypoint.sh
+    # image: docker.io/frappe/bench:latest
+    build:
+      context: .
+      dockerfile: dockerfile/Dockerfile
+    # command: /entrypoint/entrypoint.sh
     environment:
       - SHELL=/bin/bash
       - URL_SITE=tripwe.local
@@ -51,7 +54,7 @@ services:
     volumes:
       - ./dev:/workspace
       #- frappe:/workspace
-      - ./entrypoint:/entrypoint
+      # - ./entrypoint:/entrypoint
     working_dir: /workspace
     # user: "1000:${GID}"
     expose:
