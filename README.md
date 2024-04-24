@@ -124,3 +124,10 @@ bench --site (NAME_OF_YOUR_SITE) install-app learn
     ├── learn.local
     └── tripwe.local
 ```
+
+## Restart Container
+Setelah install apps, dan akan mengakses site nya dari browser, kalian wajib setiap setelah menambahkan apps baru yaitu mresetart frappe bench nya atau container nya
+```bash
+exit # exit dari container
+docker compose restart frappe
+```
