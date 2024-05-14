@@ -22,6 +22,7 @@ jika kamu ingin men start docker dengan _detach mode_, langkah pertama kamu haru
 masuk ke dalam container _frappe_ `docker compose exec -it frappe bash`
 
 ## Create new site
+<<<<<<< HEAD
 default dari settingan [entrypoint.sh](https://github.com/Nyuuk/docker-frappe/blob/main/entrypoint/entrypoint.sh), ini akan meng generate new site, dengan domain tripwe.local, jika kamu ingin mengubahnya. kamu bisa mengedit di file `docker-compose.yml`.
 ```yaml
 frappe:
@@ -43,6 +44,9 @@ silahkan edit `URL_SITE` lalu jalani `docker compose up` lagi.
 
 
 jika kamu ingin menambahkan site baru, maka jalan kan command di bawah ini
+=======
+default dari settingan [entrypoint.sh](https://github.com/Nyuuk/docker-frappe/blob/main/entrypoint/entrypoint.sh), ini akan meng generate new site, dengan domain api.tripwe.local, jika kamu ingin mengubahnya. kamu bisa mengedit di services -> frappe -> environments -> URL_SITE. jika kamu ingin menambahkan site baru, maka jalan kan command di bawah ini
+>>>>>>> 1b30ba1 (feat: healtcheck waiting db)
 
 [Enter to container frappe](#enter-to-container-frappe)
 ```bash
@@ -56,12 +60,17 @@ bench --site development.localhost set-config developer_mode 1
 bench --site development.localhost clear-cache
 ```
 
+<<<<<<< HEAD
 ## Install ERPNext (Optional)
+=======
+## Install ERPNext
+>>>>>>> 1b30ba1 (feat: healtcheck waiting db)
 [Enter to container frappe](#enter-to-container-frappe)
 ```bash
 bench get-app --resolve-deps erpnext
 bench --site development.localhost install-app erpnext
 ```
+<<<<<<< HEAD
 
 ## Install Custom app (Optional)
 Sebagai contoh saya ingin menginstall apps yang mana apps ini di gunakan untuk _trial and error_ saya [GitLab Nyuuk - learn_apps](https://gitlab.com/Nyuuk/learn_apps)
@@ -131,3 +140,5 @@ Setelah install apps, dan akan mengakses site nya dari browser, kalian wajib set
 exit # exit dari container
 docker compose restart frappe
 ```
+=======
+>>>>>>> 1b30ba1 (feat: healtcheck waiting db)
