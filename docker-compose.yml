@@ -22,6 +22,12 @@ services:
       MYSQL_ROOT_PASSWORD: ${MARIADB_PWD}
     volumes:
       - mariadb-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 30s
+      interval: 30s
+      timeout: 5s
+      retries: 3
 #    ports:
 #      - 3306:3306
 
@@ -63,6 +69,9 @@ services:
     ports:
       - 8000-8005:8000-8005
       - 9000-9005:9000-9005
+    depends_on:
+      mariadb:
+        condition: service_healthy
 
   # web:
   #   image: nginx:latest
