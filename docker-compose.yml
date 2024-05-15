@@ -24,8 +24,8 @@ services:
       - mariadb-data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "/usr/local/bin/healthcheck.sh", "--connect", "--innodb_initialized"]
-      start_period: 30s
-      interval: 30s
+      start_period: 20s
+      interval: 15s
       timeout: 5s
       retries: 3
 #    ports:
@@ -60,7 +60,8 @@ services:
       - MARIADB_PWD=${MARIADB_PWD}
     volumes:
       - ./dev:/workspace
-      #- frappe:/workspace
+      # - /etc/hosts:/etc/hosts:rwo # uncomment this if you are using linux environment
+      # - frappe:/workspace
       # - ./entrypoint:/entrypoint
     working_dir: /workspace
     # user: "1000:${GID}"
