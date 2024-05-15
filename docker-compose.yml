@@ -44,6 +44,7 @@ services:
         ipv4_address: 172.26.0.100
 
   frappe:
+    container_name: frappe
     networks:
       default:
         ipv4_address: 172.26.0.5
