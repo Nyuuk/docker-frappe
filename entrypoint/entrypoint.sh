@@ -30,6 +30,8 @@ setup_frappe_bench() {
     bench --site $URL_SITE clear-cache
     echo "Starting Bench"
     bench start
+    echo "Error Starting Bench | sleep infinity"
+    sleep infinity
 }
 
 # Fungsi untuk menjalankan langkah-langkah saat folder sudah ada
@@ -38,12 +40,16 @@ run_bench_start() {
     echo "Folder found in /workspace/frappe-bench"
     echo "Starting Bench"
     bench start
+    echo "Error Starting Bench | sleep infinity"
+    sleep infinity
 }
 
 # Mengecek apakah folder /workspace/frappe-bench sudah ada
 if check_directory; then
+    /entrypoint/change-localtime.sh
     run_bench_start
 else
+    /entrypoint/change-localtime.sh
     setup_frappe_bench
 fi
 
