@@ -49,20 +49,21 @@ services:
       default:
         ipv4_address: 172.26.0.5
     restart: on-failure
-    # image: docker.io/frappe/bench:latest
-    build:
-      context: .
-      dockerfile: dockerfile/Dockerfile
-    # command: /entrypoint/entrypoint.sh
+    image: docker.io/frappe/bench:v5.22.3
+    # build:
+    #   context: .
+    #   dockerfile: dockerfile/Dockerfile
+    command: /entrypoint/entrypoint.sh
     environment:
       - SHELL=/bin/bash
       - URL_SITE=tripwe.local
       - MARIADB_PWD=${MARIADB_PWD}
+      - FRAPPE_FOLDER="frappe-bench"
     volumes:
       - ./dev:/workspace
       # - /etc/hosts:/etc/hosts:rwo # uncomment this if you are using linux environment
       # - frappe:/workspace
-      # - ./entrypoint:/entrypoint
+      - ./entrypoint:/entrypoint
     working_dir: /workspace
     # user: "1000:${GID}"
     expose:

@@ -1,4 +1,4 @@
-FROM docker.io/frappe/bench:latest
+FROM docker.io/frappe/bench:v5.22.3
 
 COPY ../entrypoint/ /entrypoint
 

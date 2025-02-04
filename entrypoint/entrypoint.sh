@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Fungsi untuk mengecek apakah folder /workspace/frappe-bench sudah ada
+# Fungsi untuk mengecek apakah folder /workspace/${FRAPPE_FOLDER} sudah ada
 check_directory() {
-    if [ -d "/workspace/frappe-bench" ]; then
+    if [ -d "/workspace/${FRAPPE_FOLDER}" ]; then
         return 0 # Folder sudah ada
     else
         return 1 # Folder belum ada
@@ -15,9 +15,9 @@ setup_frappe_bench() {
     echo "Change permission folder"
     sudo chown -R frappe:$GID /workspace
     sudo chmod -R g+rwx /workspace
-    echo "Initial Directory frapp-bench"
-    bench init --skip-redis-config-generation frappe-bench
-    cd frappe-bench || exit 1
+    echo "Initial Directory ${FRAPPE_FOLDER}"
+    bench init --skip-redis-config-generation ${FRAPPE_FOLDER}
+    cd ${FRAPPE_FOLDER} || exit 1
     echo "Initial Database config and redis config"
     bench set-config -g db_host mariadb
     bench set-config -g redis_cache redis://redis-cache:6379
@@ -36,15 +36,15 @@ setup_frappe_bench() {
 
 # Fungsi untuk menjalankan langkah-langkah saat folder sudah ada
 run_bench_start() {
-    cd /workspace/frappe-bench || exit 1
-    echo "Folder found in /workspace/frappe-bench"
+    cd /workspace/${FRAPPE_FOLDER} || exit 1
+    echo "Folder found in /workspace/${FRAPPE_FOLDER}"
     echo "Starting Bench"
     bench start
     echo "Error Starting Bench | sleep infinity"
     sleep infinity
 }
 
-# Mengecek apakah folder /workspace/frappe-bench sudah ada
+# Mengecek apakah folder /workspace/${FRAPPE_FOLDER} sudah ada
 if check_directory; then
     /entrypoint/change-localtime.sh
     run_bench_start
